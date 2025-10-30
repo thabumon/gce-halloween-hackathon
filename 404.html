@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — Lost in the Haunted Hallway</title>
+<meta name="theme-color" content="#0b0b11">
+<style>
+  :root{
+    --bg:#0b0b11;
+    --ink:#0e0e16;
+    --card:#11111a;
+    --accent:#ff7a1a;
+    --accent-2:#ffbb55;
+    --text:#f2eef8;
+    --muted:#b7b3c7;
+    --glow:0 0 32px rgba(255,122,26,.25), 0 0 8px rgba(255,122,26,.35) inset;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    color:var(--text);
+    font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans",sans-serif;
+    background: radial-gradient(1800px 900px at 50% -10%, #13131f 20%, var(--bg) 60%), var(--bg);
+    overflow:hidden;
+  }
+
+  /* Starry sky */
+  .sky, .sky::before, .sky::after{
+    position:absolute;inset:0;content:"";
+    background-repeat:repeat;
+    pointer-events:none;opacity:.35;
+  }
+  .sky{
+    background-image: radial-gradient(1px 1px at 20% 30%, #d6d4ff 40%, transparent 41%),
+                      radial-gradient(1px 1px at 80% 20%, #c0bfff 40%, transparent 41%),
+                      radial-gradient(1px 1px at 60% 75%, #e6e5ff 40%, transparent 41%);
+    animation: twinkle 8s linear infinite;
+  }
+  .sky::before{
+    background-image: radial-gradient(1px 1px at 40% 60%, #f6f5ff 40%, transparent 41%),
+                      radial-gradient(1.2px 1.2px at 70% 40%, #bebcff 40%, transparent 41%);
+    animation: twinkle 10s linear infinite reverse;
+  }
+  .sky::after{
+    background-image: radial-gradient(1px 1px at 15% 80%, #fef9d6 40%, transparent 41%),
+                      radial-gradient(1px 1px at 90% 50%, #fff7cc 40%, transparent 41%);
+    animation: twinkle 12s linear infinite;
+  }
+  @keyframes twinkle{ 50%{opacity:.15} }
+
+  /* Fog layers */
+  .fog, .fog::before, .fog::after{
+    position:absolute;left:-20%;right:-20%;height:50%;
+    bottom:-5%;filter:blur(8px);opacity:.3;pointer-events:none;
+    content:"";background:
+      radial-gradient(60% 80% at 20% 100%, #c4c0d0 5%, transparent 60%),
+      radial-gradient(50% 60% at 70% 90%, #c4c0d0 6%, transparent 55%);
+    animation: fogmove 30s ease-in-out infinite;
+  }
+  .fog::before{bottom:5%;opacity:.25;animation-duration:42s}
+  .fog::after{bottom:15%;opacity:.22;animation-duration:55s}
+  @keyframes fogmove{
+    0%,100%{transform:translateX(0)}
+    50%{transform:translateX(6%)}
+  }
+
+  /* Scene container */
+  .wrap{
+    position:relative;
+    height:100%;
+    display:grid;
+    place-items:center;
+    padding:24px;
+    z-index:1;
+  }
+  .card{
+    position:relative;
+    background: linear-gradient(180deg, var(--card), #0f0f18);
+    border:1px solid #222231;
+    border-radius:18px;
+    padding:28px 22px 24px;
+    width:min(720px, 92vw);
+    box-shadow: 0 20px 60px rgba(0,0,0,.55);
+    overflow:hidden;
+  }
+
+  /* Title 404 with blinking eyes */
+  .title{
+    margin:8px 0 6px;
+    font-size: clamp(44px, 10vw, 92px);
+    letter-spacing: 2px;
+    text-align:center;
+    line-height: .95;
+    font-weight:900;
+    color:#f6f3ff;
+    text-shadow: 0 2px 0 #000, 0 0 18px rgba(255,122,26,.15);
+  }
+  .title .eyes{
+    display:inline-block; position:relative; margin:0 .03em;
+    width:1em; height:1em; transform:translateY(.08em);
+  }
+  .eye{position:absolute; inset:18% 18%; border-radius:50%; background:#0a0a12; overflow:hidden;
+       box-shadow: inset 0 0 0 2px #2a2a3a, inset 0 -8px 24px rgba(255,122,26,.25);}
+  .pupil{position:absolute; width:36%; height:36%; background:#ffe7c8; border-radius:50%;
+         top:38%; left:48%; transform:translate(-50%,-50%); box-shadow: 0 0 12px rgba(255,180,120,.45);}
+  .lid{position:absolute; left:-5%; right:-5%; height:50%; background:var(--card); border-bottom:2px solid #2a2a3a;
+       transform-origin:top center; animation: blink 6s infinite ease-in-out;}
+  .lid.lower{top:auto; bottom:-5%; border-top:2px solid #2a2a3a; border-bottom:none; transform-origin:bottom center;}
+  @keyframes blink{
+    0%, 92%, 100% {transform:scaleY(0)}
+    94% {transform:scaleY(1)}
+  }
+
+  .subtitle{
+    margin:6px auto 14px; text-align:center; color:var(--muted);
+    max-width:56ch; font-size:clamp(14px, 2.2vw, 16px);
+  }
+
+  /* CTA */
+  .actions{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:8px 0 6px}
+  .btn{
+    --ring: rgba(255,122,26,.25);
+    background:var(--accent);
+    color:#1b1008;
+    border:none; border-radius:12px; font-weight:800;
+    padding:12px 16px; cursor:pointer;
+    box-shadow: 0 6px 16px rgba(255,122,26,.25);
+    transition: transform .12s ease, box-shadow .18s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); box-shadow: 0 10px 24px rgba(255,122,26,.35) }
+  .ghost-btn{
+    background:#1a1a24; color:#f1eaf7; border:1px solid #2a2a38;
+    box-shadow:none;
+  }
+  .note{margin-top:4px;text-align:center;color:#9f9bb0;font-size:12px}
+
+  /* Floating ghosts */
+  .ghost{
+    position:absolute; width:90px; height:110px; top: -10px;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+    opacity:.95;
+    animation: float 7s ease-in-out infinite;
+  }
+  .ghost svg{width:100%; height:100%}
+  .g1{left:-40px; top:30px; animation-duration: 7.5s}
+  .g2{right:-30px; top:80px; animation-duration: 9.2s}
+  .g3{left:50%; transform:translateX(-50%); top:-40px; animation-duration: 8.5s}
+  @keyframes float { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-14px) } }
+
+  /* Bats (flap + glide) */
+  .bat{position:absolute; width:70px; height:40px; top:-12px; opacity:.9}
+  .bat:before, .bat:after{
+    content:""; position:absolute; top:50%; width:28px; height:14px; background:#1f1c25; border-radius:28px 28px 0 0;
+    transform-origin:0 100%;
+    box-shadow:0 0 14px rgba(0,0,0,.35) inset;
+    animation: flap .6s ease-in-out infinite;
+  }
+  .bat:after{left:auto; right:0; transform-origin:100% 100%}
+  .bat .body{position:absolute; left:50%; top:50%; width:12px; height:18px; background:#2a2631; transform:translate(-50%,-50%); border-radius:6px}
+  @keyframes flap{
+    0%,100%{transform:rotate(14deg)}
+    50%{transform:rotate(-18deg)}
+  }
+  .b1{left:10%; animation: glide1 11s linear infinite}
+  .b2{left:70%; animation: glide2 13s linear infinite}
+  .b3{left:-10%; animation: glide3 15s linear infinite}
+  @keyframes glide1{0%{transform:translateX(0) translateY(0)} 50%{transform:translateX(40vw) translateY(6vh)} 100%{transform:translateX(0) translateY(0)}}
+  @keyframes glide2{0%{transform:translateX(0) translateY(0)} 50%{transform:translateX(-30vw) translateY(-3vh)} 100%{transform:translateX(0) translateY(0)}}
+  @keyframes glide3{0%{transform:translateX(0) translateY(0)} 50%{transform:translateX(60vw) translateY(-5vh)} 100%{transform:translateX(0) translateY(0)}}
+
+  /* Pumpkin footer deco */
+  .pumpkins{
+    position:absolute; inset:auto 0 -8px 0; height:110px; pointer-events:none; opacity:.9;
+    background:
+      radial-gradient(60px 40px at 20% 40%, #2a1a10 30%, transparent 31%),
+      radial-gradient(60px 40px at 26% 60%, #2a1a10 30%, transparent 31%),
+      radial-gradient(60px 40px at 74% 50%, #2a1a10 30%, transparent 31%);
+  }
+
+  /* Optional countdown badge */
+  .timer{
+    position:absolute; top:12px; right:12px;
+    font-size:12px; color:#ffedd8; background:linear-gradient(180deg,#25180f,#1b130c);
+    border:1px solid #5a2d00; border-radius:999px; padding:6px 10px;
+    box-shadow: inset 0 0 0 2px rgba(255,122,26,.1);
+  }
+
+  /* Reduce motion support */
+  @media (prefers-reduced-motion: reduce){
+    .sky,.fog,.ghost,.bat:before,.bat:after,.bat,.eyes .lid{ animation:none !important }
+  }
+</style>
+</head>
+<body>
+  <div class="sky"></div>
+  <div class="wrap">
+    <div class="card" role="group" aria-labelledby="t" aria-describedby="d">
+      <!-- floating decor -->
+      <div class="ghost g1" aria-hidden="true">
+        <svg viewBox="0 0 120 140" fill="none">
+          <defs>
+            <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#ffffff"/>
+              <stop offset=".9" stop-color="#d9d9ff"/>
+            </linearGradient>
+          </defs>
+          <path d="M60 10c25 0 42 18 42 46v60c0 5-6 7-9 3-5-5-8-5-13 0-5 5-10 5-15 0-5-5-10-5-15 0-5 5-10 5-15 0-5-5-8-5-13 0-3 4-9 2-9-3V56C13 28 35 10 60 10Z" fill="url(#g)"/>
+          <circle cx="48" cy="64" r="6" fill="#0d0d14"/>
+          <circle cx="72" cy="64" r="6" fill="#0d0d14"/>
+          <circle cx="50" cy="66" r="2" fill="#fff"/>
+          <circle cx="74" cy="66" r="2" fill="#fff"/>
+          <path d="M48 84c4 6 20 6 24 0" stroke="#0d0d14" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="ghost g2" aria-hidden="true">
+        <svg viewBox="0 0 120 140" fill="none">
+          <use href="#g-ghost"></use>
+        </svg>
+      </div>
+      <div class="ghost g3" aria-hidden="true">
+        <svg viewBox="0 0 120 140" fill="none">
+          <use href="#g-ghost"></use>
+        </svg>
+      </div>
+      <div class="bat b1" aria-hidden="true"><div class="body"></div></div>
+      <div class="bat b2" aria-hidden="true"><div class="body"></div></div>
+      <div class="bat b3" aria-hidden="true"><div class="body"></div></div>
+
+      <div class="timer" id="timer" aria-live="polite">Auto-redirect in 15s</div>
+
+      <!-- 404 headline -->
+      <h1 id="t" class="title">
+        4<span class="eyes" aria-hidden="true">
+          <span class="eye">
+            <span class="pupil"></span>
+            <span class="lid"></span>
+            <span class="lid lower"></span>
+          </span>
+          <span class="eye">
+            <span class="pupil"></span>
+            <span class="lid"></span>
+            <span class="lid lower"></span>
+          </span>
+        </span>4
+      </h1>
+      <p id="d" class="subtitle">
+        You’ve wandered into a dark corridor. The page you seek is hiding with the ghosts—or never existed.
+      </p>
+
+      <div class="actions">
+        <a class="btn" id="homeBtn" href="/" aria-label="Go back to homepage">Back Home</a>
+        <button class="btn ghost-btn" id="reportBtn" aria-label="Report this broken link">Report this link</button>
+      </div>
+      <p class="note">Tip: if you typed the address, check the spelling. Otherwise, the page may have been moved.</p>
+
+      <div class="pumpkins" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="fog"></div>
+
+  <!-- Hidden SVG symbol so we can reuse the ghost -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="g2" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#ffffff"/>
+        <stop offset=".9" stop-color="#e6e6ff"/>
+      </linearGradient>
+      <symbol id="g-ghost" viewBox="0 0 120 140">
+        <path d="M60 10c25 0 42 18 42 46v60c0 5-6 7-9 3-5-5-8-5-13 0-5 5-10 5-15 0-5-5-10-5-15 0-5 5-10 5-15 0-5-5-8-5-13 0-3 4-9 2-9-3V56C13 28 35 10 60 10Z" fill="url(#g2)"/>
+        <circle cx="48" cy="64" r="6" fill="#0d0d14"/>
+        <circle cx="72" cy="64" r="6" fill="#0d0d14"/>
+        <circle cx="50" cy="66" r="2" fill="#fff"/>
+        <circle cx="74" cy="66" r="2" fill="#fff"/>
+        <path d="M48 84c4 6 20 6 24 0" stroke="#0d0d14" stroke-width="3" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
+<script>
+  // Small parallax for pupils following mouse
+  const pupils = Array.from(document.querySelectorAll('.pupil'));
+  document.addEventListener('pointermove', (e)=>{
+    const cx = window.innerWidth/2, cy = window.innerHeight/2;
+    const dx = (e.clientX - cx)/cx, dy = (e.clientY - cy)/cy;
+    pupils.forEach(p=>{
+      const x = Math.max(-8, Math.min(8, dx*10));
+      const y = Math.max(-8, Math.min(8, dy*10));
+      p.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+    });
+  }, {passive:true});
+
+  // Optional: Auto-redirect with countdown
+  const timerEl = document.getElementById('timer');
+  const homeBtn = document.getElementById('homeBtn');
+  let seconds = 15; // change if you want a different delay
+  const tick = ()=>{
+    seconds--;
+    if(seconds <= 0){
+      window.location.href = homeBtn.getAttribute('href') || '/';
+    }else{
+      timerEl.textContent = `Auto-redirect in ${seconds}s`;
+    }
+  };
+  timerEl.textContent = `Auto-redirect in ${seconds}s`;
+  const i = setInterval(tick, 1000);
+
+  // Basic "report link" action - opens mailto
+  document.getElementById('reportBtn').addEventListener('click', ()=>{
+    const url = location.href;
+    const subject = encodeURIComponent('Broken link report');
+    const body = encodeURIComponent(`Hi,\n\nI found a broken link here: ${url}\n\nSteps to reproduce:\n1. \n2. \n\nThanks!`);
+    window.location.href = `mailto:admin@example.com?subject=${subject}&body=${body}`;
+  });
+
+  // Respect reduced motion: stop the countdown animation spam
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.body.classList.add('reduced-motion');
+  }
+</script>
+</body>
+</html>

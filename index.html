@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- Icons (optional) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+  <title>GCE Halloween Hackathon — Tasks</title>
+
+  <style>
+    :root{
+      --bg:#0e0e12; --card:#16161d; --acc:#ff7a1a; --text:#eaeaf0; --muted:#a7a7b1;
+      --border:#262633; --ink:#140a03;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .container{max-width:1000px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;background:rgba(14,14,18,.8);backdrop-filter:blur(6px);border-bottom:1px solid #222;z-index:50}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+    .nav__logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:800}
+    .badge{background:#23160f;color:#ffd4b2;border:1px solid #5a2d00;padding:2px 8px;border-radius:999px;font-size:12px}
+
+    /* Hero */
+    .hero{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 0 10px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
+    h1{font-size:28px;margin:6px 0 0}
+    .hero p{color:#cfcfe6;margin:6px 0 0;max-width:680px}
+    .hero__img{height:84px;opacity:.95;filter:drop-shadow(0 6px 18px rgba(255,122,26,.2));animation:float 4.5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+    /* Tabs */
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 8px}
+    .tab{background:#1b1b25;border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600;display:inline-flex;gap:8px;align-items:center;transition:transform .15s ease, box-shadow .2s ease, border-color .2s}
+    .tab:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(255,122,26,.12)}
+    .tab[aria-selected="true"]{background:linear-gradient(180deg,#25180f,#1c1510);border-color:#5a2d00;box-shadow:0 0 0 2px rgba(255,122,26,.25) inset;color:#ffd9bf}
+    .tab i{font-size:18px}
+
+    /* Upload button */
+    .btn{background:#1d1d27;border:1px solid #2d2d3a;color:var(--text);padding:12px 14px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+    .btn-primary{background:var(--acc);border-color:var(--acc);color:var(--ink);font-weight:800;box-shadow:0 0 0 0 rgba(255,122,26,.45);animation:glow 2.8s ease-in-out infinite}
+    @keyframes glow{
+      0%,100%{box-shadow:0 0 0 0 rgba(255,122,26,.35)}
+      50%{box-shadow:0 0 24px 4px rgba(255,122,26,.35)}
+    }
+
+    /* Task grid */
+    .grid{display:grid;gap:14px}
+    .task{background:#101018;border:1px solid #242433;border-radius:12px;padding:14px;opacity:0;transform:translateY(6px);animation:taskIn .5s ease forwards}
+    .task h3{margin:0 0 6px;font-size:16px}
+    .task p{margin:0;color:var(--muted);font-size:14px}
+    .pill{display:inline-block;margin-top:8px;background:#1f1b16;border:1px solid #3a250a;color:#ffcc99;padding:2px 8px;border-radius:999px;font-size:12px}
+    @keyframes taskIn{to{opacity:1;transform:translateY(0)}}
+    .task:nth-child(1){animation-delay:.05s}
+    .task:nth-child(2){animation-delay:.1s}
+    .task:nth-child(3){animation-delay:.15s}
+    .task:nth-child(4){animation-delay:.2s}
+    .task:nth-child(5){animation-delay:.25s}
+    .task:nth-child(6){animation-delay:.3s}
+    .task:nth-child(7){animation-delay:.35s}
+    .task:nth-child(8){animation-delay:.4s}
+    .task:nth-child(9){animation-delay:.45s}
+
+    /* Hide class */
+    .hide{display:none}
+
+    /* GALLERY */
+    .section-title{font-size:22px;margin:22px 0 10px}
+    .gallery{margin-top:28px}
+    .gallery__grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+    .gallery__item{
+      position:relative;overflow:hidden;border-radius:14px;
+      border:1px solid var(--border);background:#0f0f16;
+      transform:translateY(6px);opacity:0;animation:picIn .6s ease forwards;
+    }
+    .gallery__item:nth-child(1){animation-delay:.05s}
+    .gallery__item:nth-child(2){animation-delay:.1s}
+    .gallery__item:nth-child(3){animation-delay:.15s}
+    .gallery__item:nth-child(4){animation-delay:.2s}
+    .gallery__item:nth-child(5){animation-delay:.25s}
+    .gallery__item:nth-child(6){animation-delay:.3s}
+    @keyframes picIn{to{opacity:1;transform:translateY(0)}}
+    .gallery__img{
+      width:100%;height:220px;object-fit:cover;display:block;
+      transition:transform .5s ease, opacity .4s ease;
+    }
+    .gallery__item:hover .gallery__img{transform:scale(1.05)}
+    .gallery__caption{
+      position:absolute;left:0;right:0;bottom:0;
+      background:linear-gradient(180deg,transparent,rgba(0,0,0,.55));
+      color:#f0e9e2;padding:8px 10px;font-size:13px
+    }
+    .gallery__empty{
+      padding:14px;border:1px dashed #3a3a48;border-radius:12px;color:var(--muted)
+    }
+    @media (max-width:900px){ .gallery__grid{grid-template-columns:repeat(2,1fr)} .gallery__img{height:190px}}
+    @media (max-width:560px){ .gallery__grid{grid-template-columns:1fr} .gallery__img{height:200px}}
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed;inset:0;background:rgba(0,0,0,.85);
+      display:none;align-items:center;justify-content:center;z-index:1000;
+    }
+    .lightbox.open{display:flex}
+    .lightbox__img{max-width:92vw;max-height:84vh;border-radius:12px;border:1px solid #333}
+    .lightbox__controls{
+      position:fixed;inset:auto 0 24px 0;display:flex;justify-content:center;gap:10px
+    }
+    .iconbtn{
+      background:#1b1b25;border:1px solid #2c2c39;color:#fff;border-radius:12px;
+      padding:10px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px
+    }
+
+    /* Footer with GCE logo slot */
+    footer{border-top:1px solid #20202a;margin-top:22px}
+    .footer__inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0;color:var(--muted)}
+    .footer__brand{display:flex;align-items:center;gap:12px}
+    .footer__logo{height:34px;width:auto;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(255,122,26,.15))}
+    .footer__text{font-size:13px}
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .hero__img,.task,.btn-primary,.gallery__item{animation:none}
+      .tab:hover{transform:none}
+    }
+
+    /* Small screens */
+    @media (max-width:640px){
+      .hero{flex-direction:column;align-items:flex-start}
+      .hero__img{align-self:flex-end}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="nav container">
+      <a href="#" class="nav__logo">
+        <img src="assets/img/logo.png" alt="" style="height:28px">
+        GCE Halloween Hackathon
+      </a>
+      <span class="badge"><i class='bx bx-time-five'></i> 30–45 min tasks</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero card">
+      <div>
+        <small style="color:var(--muted)">Theme</small>
+        <h1>Code • Create • Creep Out!</h1>
+        <p>Select your department tab to see your quick challenge. When done !</p>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+          <a id="uploadBtn" class="btn btn-primary" href="https://forms.gle/XtQLe1fmVBGiMKzh9" target="_blank" rel="noopener">
+            <i class='bx bxl-google'></i> Upload Your Work
+          </a>
+        </div>
+      </div>
+      <img src="assets/img/home1-img.png" alt="Pumpkin" class="hero__img">
+    </section>
+
+    <!-- Tabs -->
+    <nav class="tabs" role="tablist" aria-label="Departments">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="panel-programming" id="tab-programming">
+        <i class='bx bx-code-alt'></i> Programming
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-data" id="tab-data">
+        <i class='bx bx-bar-chart-alt-2'></i> Data Analyst
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-multimedia" id="tab-multimedia">
+        <i class='bx bx-palette'></i> Multimedia
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-msoffice" id="tab-msoffice">
+        <i class='bx bxl-microsoft'></i> MS Office
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-digital" id="tab-digital">
+        <i class='bx bx-bullhorn'></i> Digital Marketing
+      </button>
+    </nav>
+
+    <!-- Panels -->
+    <section id="panel-programming" class="grid" role="tabpanel" aria-labelledby="tab-programming">
+      <div class="task">
+        <h3>🎃 Pumpkin Printer (Python)</h3>
+        <p>Print a pumpkin ASCII art with a function. Add size or eyes as parameters.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>👻 Random Ghost Generator</h3>
+        <p>CLI program that outputs a random ghost message/emoji each run (arrays + RNG).</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>🕷️ Monster Click (JS)</h3>
+        <p>Ghost appears randomly; click to score within 30 seconds. Show score.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>💀 404 Ghost Page (HTML/CSS)</h3>
+        <p>Create a Halloween-themed 404 page with a subtle blink/float animation.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+    </section>
+
+    <section id="panel-data" class="grid hide" role="tabpanel" aria-labelledby="tab-data">
+      <div class="task">
+        <h3>🎃 Pumpkin Sales Mini Dashboard</h3>
+        <p>Build a 1-page Excel/Sheets dashboard: sales by day, top items, and a chart.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>👻 Horror Movies Snapshot</h3>
+        <p>Analyze a tiny CSV (rating, revenue, year). Output 2 charts + 3 insights.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>🧟 Monster Population Chart</h3>
+        <p>Bar/line chart comparing zombies, vampires, ghosts across 5 years.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+    </section>
+
+    <section id="panel-multimedia" class="grid hide" role="tabpanel" aria-labelledby="tab-multimedia">
+      <div class="task">
+        <h3>🖌️ Haunted Poster</h3>
+        <p>Design a Halloween party or horror movie poster (Canva/Photoshop/Figma).</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>👁️ Spooky GIF (2–3 frames)</h3>
+        <p>Create a blinking eyes or floating bat GIF. Export as GIF/MP4.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>🧛 Monster Character</h3>
+        <p>Design a cute or scary character with a quick style sheet (colors, pose).</p>
+        <span class="pill">30–45 min</span>
+      </div>
+    </section>
+
+    <section id="panel-msoffice" class="grid hide" role="tabpanel" aria-labelledby="tab-msoffice">
+      <div class="task">
+        <h3>👻 Excel Pixel Art (Ghost or Pumpkin)</h3>
+        <p>Make 16×16 pixel art using cell fills; save the workbook.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>🎃 3-Slide Haunted Story (PPT)</h3>
+        <p>Short spooky story with transitions and one sound effect.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>🕷️ Halloween Word Poster (Word)</h3>
+        <p>Create a poster using shapes, WordArt, and a simple grid layout.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+    </section>
+
+    <section id="panel-digital" class="grid hide" role="tabpanel" aria-labelledby="tab-digital">
+      <div class="task">
+        <h3>📣 Halloween Social Ad</h3>
+        <p>Design an IG/FB ad creative with headline, CTA, caption + 5 hashtags.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>🎬 15-sec Spooky Reel (script/shot)</h3>
+        <p>Plan, shoot, and caption a simple vertical 15-sec Halloween reel.</p>
+        <span class="pill">30–45 min</span>
+      </div>
+      <div class="task">
+        <h3>😂 Meme Trio</h3>
+        <p>Create three Halloween tech/student life memes (1080×1080).</p>
+        <span class="pill">30–45 min</span>
+      </div>
+    </section>
+
+    <!-- ========= GALLERY (Showcase later) ========= -->
+    <!-- <section class="gallery" aria-labelledby="gallery-title">
+      <h2 id="gallery-title" class="section-title">Event Gallery</h2> -->
+
+      <!-- Empty state (auto-hides when images exist) -->
+      <!-- <div id="gallery-empty" class="gallery__empty">
+        No photos uploaded yet. After the hackathon, add your best shots here!
+      </div> -->
+
+      <!-- <div id="gallery-grid" class="gallery__grid"> -->
+        <!-- EXAMPLE PLACEHOLDERS — REPLACE with your real photos in /assets/photos/
+        <figure class="gallery__item">
+          <img class="gallery__img" src="assets/photos/01.jpg" alt="Students working on code" loading="lazy">
+          <figcaption class="gallery__caption">Programming — Monster Click game</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img class="gallery__img" src="assets/photos/02.jpg" alt="Poster design in progress" loading="lazy">
+          <figcaption class="gallery__caption">Multimedia — Haunted Poster</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img class="gallery__img" src="assets/photos/03.jpg" alt="Excel pixel art pumpkin" loading="lazy">
+          <figcaption class="gallery__caption">MS Office — Pixel Art</figcaption>
+        </figure>
+        -->
+      <!-- </div> -->
+    </section>
+  </main>
+
+  <!-- Footer with GCE logo slot -->
+  <footer class="container">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <!-- Replace with your real logo path -->
+        <img src="assets/img/G-TEC-CENTRE-OF-EXCELLENCE-white.png" alt="GCE Logo" class="footer__logo">
+        <div class="footer__text">© GCE Halloween Hackathon • All the best!</div>
+      </div>
+      <!-- <div class="footer__text">Need help? Ask a volunteer 👻</div> -->
+    </div>
+  </footer>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Image viewer">
+    <img id="lightbox-img" class="lightbox__img" src="" alt="">
+    <div class="lightbox__controls">
+      <button id="prevBtn" class="iconbtn" aria-label="Previous photo"><i class='bx bx-left-arrow-alt'></i></button>
+      <button id="nextBtn" class="iconbtn" aria-label="Next photo"><i class='bx bx-right-arrow-alt'></i></button>
+      <button id="closeBtn" class="iconbtn" aria-label="Close viewer"><i class='bx bx-x'></i></button>
+    </div>
+  </div>
+
+  <script>
+    // Tabs behavior (accessible)
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const panels = {
+      'tab-programming':'panel-programming',
+      'tab-data':'panel-data',
+      'tab-multimedia':'panel-multimedia',
+      'tab-msoffice':'panel-msoffice',
+      'tab-digital':'panel-digital'
+    };
+
+    function activateTab(tabEl){
+      tabs.forEach(t=>{ t.setAttribute('aria-selected', t===tabEl ? 'true' : 'false'); });
+      Object.entries(panels).forEach(([tabId,panelId])=>{
+        const panel = document.getElementById(panelId);
+        if(tabEl.id === tabId){
+          panel.classList.remove('hide');
+          panel.querySelectorAll('.task').forEach((t,i)=>{
+            t.style.animation='none'; void t.offsetWidth; // reflow
+            t.style.animation = `taskIn .5s ease forwards`;
+            t.style.animationDelay = `${0.05 + i*0.05}s`;
+          });
+        }else{
+          panel.classList.add('hide');
+        }
+      });
+      // Optional: scroll into view on mobile
+      document.getElementById(panels[tabEl.id]).scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    tabs.forEach(t=>{
+      t.addEventListener('click', ()=> activateTab(t));
+      t.addEventListener('keydown', (e)=>{
+        const idx = tabs.indexOf(t);
+        if(e.key === 'ArrowRight'){ (tabs[idx+1]||tabs[0]).focus(); }
+        if(e.key === 'ArrowLeft'){ (tabs[idx-1]||tabs[tabs.length-1]).focus(); }
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); activateTab(t); }
+      });
+    });
+    activateTab(document.getElementById('tab-programming'));
+
+    // ======= Gallery logic =======
+    const grid = document.getElementById('gallery-grid');
+    const empty = document.getElementById('gallery-empty');
+
+    // If you dynamically inject images later, leave this as-is.
+    // If there are static <figure> items, this will auto-hide the empty state.
+    function updateEmptyState(){
+      const hasPics = grid.querySelectorAll('.gallery__item').length > 0;
+      empty.style.display = hasPics ? 'none' : 'block';
+    }
+    updateEmptyState();
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    let pics = [];
+    let idx = 0;
+
+    function refreshPics(){
+      pics = Array.from(grid.querySelectorAll('.gallery__img'));
+    }
+    refreshPics();
+
+    function openLightbox(i){
+      idx = i;
+      const pic = pics[idx];
+      lbImg.src = pic.src;
+      lbImg.alt = pic.alt || '';
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden','false');
+    }
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden','true');
+      lbImg.src = '';
+    }
+    function nav(delta){
+      if(!pics.length) return;
+      idx = (idx + delta + pics.length) % pics.length;
+      lbImg.src = pics[idx].src;
+      lbImg.alt = pics[idx].alt || '';
+    }
+
+    grid.addEventListener('click', (e)=>{
+      const img = e.target.closest('.gallery__img');
+      if(!img) return;
+      refreshPics();
+      const i = pics.indexOf(img);
+      if(i>=0) openLightbox(i);
+    });
+    closeBtn.addEventListener('click', closeLightbox);
+    prevBtn.addEventListener('click', ()=> nav(-1));
+    nextBtn.addEventListener('click', ()=> nav(1));
+    lightbox.addEventListener('click', (e)=>{ if(e.target===lightbox) closeLightbox(); });
+    window.addEventListener('keydown', (e)=>{
+      if(!lightbox.classList.contains('open')) return;
+      if(e.key==='Escape') closeLightbox();
+      if(e.key==='ArrowLeft') nav(-1);
+      if(e.key==='ArrowRight') nav(1);
+    });
+
+    // Example: programmatically add photos later (uncomment & replace paths)
+    /*
+    const photos = [
+      {src:'assets/photos/01.jpg', alt:'Students coding', cap:'Programming — Monster Click'},
+      {src:'assets/photos/02.jpg', alt:'Poster design', cap:'Multimedia — Haunted Poster'},
+      {src:'assets/photos/03.jpg', alt:'Excel pixel art', cap:'MS Office — Pixel Art'}
+    ];
+    const frag = document.createDocumentFragment();
+    photos.forEach(p=>{
+      const fig = document.createElement('figure');
+      fig.className = 'gallery__item';
+      fig.innerHTML = \`
+        <img class="gallery__img" src="\${p.src}" alt="\${p.alt}" loading="lazy">
+        <figcaption class="gallery__caption">\${p.cap}</figcaption>
+      \`;
+      frag.appendChild(fig);
+    });
+    grid.appendChild(frag);
+    updateEmptyState();
+    refreshPics();
+    */
+  </script>
+</body>
+</html>
